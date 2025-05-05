@@ -11,13 +11,16 @@ HEIGHT = 600
 center_x = float (WIDTH / 2)
 center_y = float (HEIGHT / 2)
 
-frame_left = (center_x - 340)
-frame_right = (center_x + 340)
-frame_top = (center_y - 330)
-frame_bottom = (center_y + 360)
+frame_left = int (60)
+frame_right = int (WIDTH - 60)
+frame_top = int (-30)
+frame_bottom = int (HEIGHT + 60)
 
-hud_y = (center_y - 250)
-hud_size = float (HEIGHT / 35)
+player_position = int (HEIGHT - 100)
+
+hud_top_y = int (50)
+hud_bottom_y = int (HEIGHT - 50)
+hud_size = int (17)
 
 ship = ["player_ship1", "player_ship2", "player_explosion_1", "player_explosion_2", "player_explosion_3", "player_explosion_4", "player_explosion_5", "player_explosion_6", "player_explosion_7", "player_explosion_8", "player_explosion_9", "player_explosion_10", "player_explosion_11"]
 
@@ -36,13 +39,13 @@ game_paused = False
 
 transition_one = Actor ("transition_0")
 transition_one.x = center_x
-transition_one.y = (center_y + 600)
+transition_one.y = int (HEIGHT + 300)
 transition_two = Actor ("transition_1")
 transition_two.x = center_x
 transition_two.y = center_y
 transition_three = Actor ("transition_2")
 transition_three.x = center_x
-transition_three.y = (center_y + 600)
+transition_three.y = int (HEIGHT + 300)
 
 transition_step = 3
 
@@ -248,11 +251,11 @@ def update ():
             player.x = frame_right
         
         if (player.spawned == False) and (level_completed == False) and (new_level == False) and (current_level > 0) and (current_level < 5):
-            if player.y > (center_y + 200):
+            if player.y > player_position:
                 player.y -= 2
             else:
                 player.spawned = True
-                player.y = (center_y + 200)
+                player.y = player_position
 
         if (keyboard.space or keyboard.up) and (player_laser_delay == 0) and (player.spawned == True):
             player_laser = Actor (player_blue_lasers [0])
@@ -630,9 +633,9 @@ def update ():
 
         if new_level == True:
             if transition_step == 0:
-                transition_one.y = (center_y + 600)
-                transition_two.y = (center_y + 1200)
-                transition_three.y = (center_y + 1800)
+                transition_one.y = int (HEIGHT + 300)
+                transition_two.y = int (HEIGHT + 900)
+                transition_three.y = int (HEIGHT + 1500)
                 transition_step = 1
             if transition_step == 1:
                 transition_one.y -= 10
@@ -666,7 +669,7 @@ def update ():
 
                 background.y = center_y
                 background_next.y = (background.y - 600)
-                transition_one.y = (center_y + 600)
+                transition_one.y = int (HEIGHT + 300)
                 transition_step = 3
             if transition_step == 3:
                 level_completed = False
@@ -681,8 +684,8 @@ def update ():
                 if transition_three.y < -center_y:
                     transition_step = 4
             if transition_step == 4:
-                transition_two.y = (center_y + 1200)
-                transition_three.y = (center_y + 1800)
+                transition_two.y = int (HEIGHT + 900)
+                transition_three.y = int (HEIGHT + 1500)
 
                 if (current_level > 0) and (current_level < 5):
                     level_countdown -= 1
@@ -741,16 +744,16 @@ def draw ():
         screen.draw.text ("VELTRAMON ZERO", fontname = "press_start", fontsize = (hud_size * 2.5), centerx = center_x, centery = (center_y - 130), color = (255, 255, 255), align = "center", owidth = 8, ocolor = "blue")
         screen.draw.text ("PRESS SPACE TO BEGIN", fontname = "press_start", fontsize = hud_size, centerx = center_x, centery = center_y, color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
         screen.draw.text ("LEFT/RIGHT = MOVE" + "\nUP/SPACE = FIRE" + "\nP = PAUSE", fontname = "press_start", fontsize = hud_size, centerx = center_x, centery = (center_y + 130), color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
-        screen.draw.text ("POWERED BY" + "\nPYGAME ZERO", fontname = "press_start", align = "left", left = frame_left, centery = hud_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
-        screen.draw.text ("DEMO VERSION" + "\nBUILD 0.14", fontname = "press_start", align = "right", right = frame_right, centery = hud_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
-        screen.draw.text ("NICHOLAS R. TRAPANI, 2023" + "\nART BY JETREL AND KENNEY" + "\nFONT BY CODEMAN98", fontname = "press_start", fontsize = hud_size, centerx = center_x, centery = (center_y + 200), color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
-        screen.draw.text ("THIS BUILD WILL NOT REPRESENT THE FULL RELEASE", fontname = "press_start", fontsize = (hud_size * 0.75), centerx = center_x, centery = (center_y + 250), color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
+        screen.draw.text ("POWERED BY" + "\nPYGAME ZERO", fontname = "press_start", align = "left", left = frame_left, centery = hud_top_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("PRE-ALPHA VERSION" + "\nBUILD 0.15", fontname = "press_start", align = "right", right = frame_right, centery = hud_top_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("NICHOLAS R. TRAPANI, 2023-2025" + "\nART BY JETREL AND KENNEY" + "\nFONT BY CODEMAN98", fontname = "press_start", fontsize = hud_size, centerx = center_x, centery = (center_y + 200), color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
+        screen.draw.text ("THIS BUILD WILL NOT REPRESENT THE FULL RELEASE", fontname = "press_start", fontsize = (hud_size * 0.75), centerx = center_x, centery = hud_bottom_y, color = (255, 255, 255), align = "center", owidth = 4, ocolor = "blue")
 
     if (current_level > 0) and (current_level < 5):
-        screen.draw.text ("SCORE\n" + str (score), fontname = "press_start", align = "left", left = frame_left, centery = hud_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
-        screen.draw.text ("TIME\n" + str (level_timer), fontname = "press_start", centerx = center_x, centery = hud_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
-        screen.draw.text ("LIVES\n" + str (player.lives), fontname = "press_start", align = "right", right = frame_right, centery = hud_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
-        screen.draw.text ("HEALTH\n" + str (player.health), fontname = "press_start", align = "left", left = frame_left, centery = (center_y + 250), color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("SCORE\n" + str (score), fontname = "press_start", align = "left", left = frame_left, centery = hud_top_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("TIME\n" + str (level_timer), fontname = "press_start", centerx = center_x, centery = hud_top_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("LIVES\n" + str (player.lives), fontname = "press_start", align = "right", right = frame_right, centery = hud_top_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
+        screen.draw.text ("HEALTH\n" + str (player.health), fontname = "press_start", align = "left", left = frame_left, centery = hud_bottom_y, color = (255, 255, 255), fontsize = hud_size, owidth = 4, ocolor = "blue")
 
     if current_level == 5:
         screen.draw.text ("THANK YOU FOR PLAYING" + "\nTHE VELTRAMON ZERO DEMO", fontname = "press_start", fontsize = (hud_size * 1.5), centerx = center_x, centery = (center_y - 100), color = (255, 255, 255), align = "center", owidth = 8, ocolor = "darkgreen")
